@@ -1,28 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/answer.dart';
+import 'package:flutter_complete_guide/question.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
 }
 
-var questionIndex = 0;
+var _questionIndex = 0;
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new MyAppState();
+    return new _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What is your favorite color?',
-      'What is your favorite animal?'
+      {
+        'questionText': 'What is your favorite color?',
+        'answers': ['red', 'blue', 'green']
+      },
+      {
+        'questionText': 'What is your favorite animal?',
+        'answers': ['dog', 'cat', 'bird']
+      },
+      {
+        'questionText': 'What  is your favorite number?',
+        'answers': ['1', '2', '3']
+      }
     ];
-    void answerQuestion() {
+    void _answerQuestion() {
       setState(() {
-        questionIndex++;
+        _questionIndex++;
         print('answer chosen');
       });
     }
@@ -34,10 +46,11 @@ class MyAppState extends State<MyApp> {
       ),
       body: Column(
         children: <Widget>[
-          Text(questions.elementAt(questionIndex)),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Blue')),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Red')),
-          ElevatedButton(onPressed: answerQuestion, child: Text('Green'))
+          new Question(questions.elementAt(_questionIndex)['questionText']),
+          ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) {
+            return Answer(_answerQuestion, answer);
+          }).toList()
         ],
       ),
     ));
